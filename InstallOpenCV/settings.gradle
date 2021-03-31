@@ -1,0 +1,4 @@
+rootProject.name='Install OpenCV'
+include ':app'
+include ':openCVLibrary320'
+include ':openCVLibrary320module'
