@@ -25,8 +25,9 @@
             android:layout_margin="15dp"
             app:fabSize="normal"
             app:borderWidth="0dp"
+            android:padding="16dp"
             app:elevation="6dp"
-            android:backgroundTint="@color/colorAccent"
-            android:id="@+id/fab1"/>
+            android:background="@color/colorAccent"
+            android:id="@+id/tambah"/>
     </FrameLayout>
 </LinearLayout>
