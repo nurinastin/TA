@@ -40,7 +40,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Home extends AppCompatActivity {
-    FloatingActionButton tambah;
+    FloatingActionButton tambah, camera;
     int SELECT_IMAGE = 1;
     private Uri contentURI;
     Bitmap bitmap;
@@ -53,7 +53,16 @@ public class Home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         tambah = findViewById(R.id.tambah);
+        camera = findViewById(R.id.camera);
         OpenCVLoader.initDebug();
+        camera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, contentURI);
+        startActivity(intent);
+            }
+        });
         tambah.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
