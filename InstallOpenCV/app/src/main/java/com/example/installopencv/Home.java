@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -29,8 +30,11 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
+import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.Scalar;
+import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.File;
@@ -48,7 +52,7 @@ public class Home extends AppCompatActivity {
     BaseLoaderCallback baseLoaderCallback;
     ImageView hasil;
     String name = "";
-
+    Scalar low, high;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,22 +60,21 @@ public class Home extends AppCompatActivity {
         tambah = findViewById(R.id.tambah);
         camera = findViewById(R.id.camera);
         OpenCVLoader.initDebug();
+//        Log.d("appname", getApplicationInfo().loadLabel(getPackageManager()).toString());
         camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                intent.putExtra(MediaStore.EXTRA_OUTPUT, contentURI);
+                Intent intent = new Intent(getBaseContext(), CustomPreview.class);
+                intent.putExtra("file", name);
                 startActivity(intent);
-//                startActivity(new Intent(getBaseContext(), CustomPreview.class));
+
+                startActivity(new Intent(getBaseContext(), CustomPreview.class));
 
             }
         });
         tambah.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        intent.putExtra(MediaStore.EXTRA_OUTPUT, contentURI);
-//        startActivity(intent);
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -79,6 +82,8 @@ public class Home extends AppCompatActivity {
             }
         });
         hasil = findViewById(R.id.hasil);
+        low = new Scalar(45,20,10);
+        high = new Scalar(75,255,255);
         requestMultiplePermissions();
     }
     public void Canny(View Button){
@@ -114,31 +119,12 @@ public class Home extends AppCompatActivity {
         }
     }
     private void SaveImage(Bitmap finalBitmap) {
-
-//        String root = Environment.getExternalStorageDirectory().toString();
-//        File myDir = new File(root + "/mySketch");
-//        if (!myDir.exists()) {
-//            myDir.mkdirs();
-//        }
         Random generator = new Random();
         int n = 10000;
         n = generator.nextInt(n);
         String image_name = "Image-"+ n;
-//        File file = new File (myDir, fname);
-//        if (file.exists ())
-//            file.delete ();
-//        try {
-//            FileOutputStream out = new FileOutputStream(file);
-//            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
-//            out.flush();
-//            out.close();
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            Log.d("eror", e.getMessage());
-//        }
         String root = Environment.getExternalStorageDirectory().toString();
-        File myDir = new File(root + "/mySketch");
+        File myDir = new File(root + "/"+getApplicationInfo().loadLabel(getPackageManager()).toString());
         if (!myDir.exists()) {
             myDir.mkdirs();
         }
@@ -165,45 +151,21 @@ public class Home extends AppCompatActivity {
         Mat edges = new Mat(rgba.size(), CvType.CV_8UC1);
         Imgproc.cvtColor(rgba, edges, Imgproc.COLOR_RGB2GRAY, 100);
         Imgproc.Canny(edges, edges, 80, 120);
+//        Imgproc.adaptiveThreshold(edges, edges, 255, Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY_INV, 15, 4);
+
+//        Core.inRange(rgba, low, high, edges);
+        Core.bitwise_not(edges, edges);
+//        Imgproc.GaussianBlur( edges, edges, new Size(3, 3), 0, 0, Core.BORDER_DEFAULT );/
+//        Imgproc.drawContours(rgba, contours, maxI, new Scalar(0, 255, 0), 5);
 //        Imgproc.Canny(edges, edges, 2, 500, 7, true);
         // Don't do that at home or work it's for visualization purpose.
-//        BitmapHelper.showBitmap(this, bitmap, hasil);
         Bitmap resultBitmap = Bitmap.createBitmap(edges.cols(), edges.rows(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(edges, resultBitmap);
 
+
+//        Core.convertScaleAbs( laplace, laplace );
         BitmapHelper.showBitmap(this, resultBitmap, hasil);
         SaveImage(resultBitmap);
-
-//        Bitmap bitmapOriginal = null;
-//
-//        bitmapOriginal = bmp;
-
-//
-//        imageView.setImageBitmap(resizeImage(this, bitmap, 400,400));
-//
-////        Bitmap bitmap = ((BitmapDrawable)imagemOriginal.getDrawable()).getBitmap();
-//
-//        int width = bitmap.getWidth();
-//        int height = bitmap.getHeight();
-//
-//        Bitmap bitmapResult = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
-//
-//        Mat mat = new Mat();
-//        Utils.bitmapToMat(bitmap, mat);
-//
-//        Imgproc.GaussianBlur( mat, mat, new Size(3, 3), 0, 0, Core.BORDER_DEFAULT );
-//
-//        Mat gray = new Mat();
-//        Imgproc.cvtColor( mat, gray, Imgproc.COLOR_RGB2GRAY );
-//
-//
-//        Mat laplace = new Mat();
-//        Imgproc.Laplacian( gray, laplace, CvType.CV_16S, 3, 1, 0, Core.BORDER_DEFAULT );
-//
-//        Core.convertScaleAbs( laplace, laplace );
-//
-//        Utils.matToBitmap(laplace, bitmapResult);
-//        detectEdgesImageView.setImageBitmap(resizeImage(DetectEdgesActivity.this,bitmapResult,400,400));
     }
     private void requestMultiplePermissions(){
 

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <SurfaceView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/view"
+            />
+        <ImageView
+            android:layout_width="400dp"
+            android:layout_height="400dp"
+            android:layout_gravity="center"
+            android:id="@+id/cover"
+            android:src="@drawable/logo"/>
+        <LinearLayout
+            android:id="@+id/capture"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:background="@color/colorPrimary"
+            android:layout_gravity="start|bottom"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="10dp"
+                android:id="@+id/flip"
+                android:textColor="@color/colorWhite"
+                android:layout_weight="1"
+                android:text="Flip"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="10dp"
+                android:layout_weight="1"
+                android:id="@+id/open"
+                android:textColor="@color/colorWhite"
+                android:text="Open"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:id="@+id/transparent"
+                android:padding="10dp"
+                android:textColor="@color/colorWhite"
+                android:layout_weight="1"
+                android:text="Transparant"
+                />
+        </LinearLayout>
+    </FrameLayout>
+</LinearLayout>
