@@ -59,10 +59,10 @@ public class Home extends AppCompatActivity {
         camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        //        intent.putExtra(MediaStore.EXTRA_OUTPUT, contentURI);
-//                startActivity(intent);
-                startActivity(new Intent(getBaseContext(), CustomPreview.class));
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, contentURI);
+                startActivity(intent);
+//                startActivity(new Intent(getBaseContext(), CustomPreview.class));
 
             }
         });
