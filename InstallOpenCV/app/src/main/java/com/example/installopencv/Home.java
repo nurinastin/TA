@@ -48,6 +48,7 @@ public class Home extends AppCompatActivity {
     BaseLoaderCallback baseLoaderCallback;
     ImageView hasil;
     String name = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,9 +59,11 @@ public class Home extends AppCompatActivity {
         camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         //        intent.putExtra(MediaStore.EXTRA_OUTPUT, contentURI);
-                startActivity(intent);
+//                startActivity(intent);
+                startActivity(new Intent(getBaseContext(), CustomPreview.class));
+
             }
         });
         tambah.setOnClickListener(new View.OnClickListener() {
@@ -161,8 +164,8 @@ public class Home extends AppCompatActivity {
 
         Mat edges = new Mat(rgba.size(), CvType.CV_8UC1);
         Imgproc.cvtColor(rgba, edges, Imgproc.COLOR_RGB2GRAY, 100);
-//        Imgproc.Canny(edges, edges, 100, 200);
-        Imgproc.Canny(edges, edges, 2, 500, 7, true);
+        Imgproc.Canny(edges, edges, 80, 120);
+//        Imgproc.Canny(edges, edges, 2, 500, 7, true);
         // Don't do that at home or work it's for visualization purpose.
 //        BitmapHelper.showBitmap(this, bitmap, hasil);
         Bitmap resultBitmap = Bitmap.createBitmap(edges.cols(), edges.rows(), Bitmap.Config.ARGB_8888);
@@ -171,9 +174,9 @@ public class Home extends AppCompatActivity {
         BitmapHelper.showBitmap(this, resultBitmap, hasil);
         SaveImage(resultBitmap);
 
-        Bitmap bitmapOriginal = null;
-
-        bitmapOriginal = bmp;
+//        Bitmap bitmapOriginal = null;
+//
+//        bitmapOriginal = bmp;
 
 //
 //        imageView.setImageBitmap(resizeImage(this, bitmap, 400,400));
