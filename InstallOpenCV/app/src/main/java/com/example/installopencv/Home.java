@@ -59,8 +59,8 @@ public class Home extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, contentURI);
-        startActivity(intent);
+        //        intent.putExtra(MediaStore.EXTRA_OUTPUT, contentURI);
+                startActivity(intent);
             }
         });
         tambah.setOnClickListener(new View.OnClickListener() {
@@ -161,8 +161,8 @@ public class Home extends AppCompatActivity {
 
         Mat edges = new Mat(rgba.size(), CvType.CV_8UC1);
         Imgproc.cvtColor(rgba, edges, Imgproc.COLOR_RGB2GRAY, 100);
-        Imgproc.Canny(edges, edges, 100, 200);
-
+//        Imgproc.Canny(edges, edges, 100, 200);
+        Imgproc.Canny(edges, edges, 2, 500, 7, true);
         // Don't do that at home or work it's for visualization purpose.
 //        BitmapHelper.showBitmap(this, bitmap, hasil);
         Bitmap resultBitmap = Bitmap.createBitmap(edges.cols(), edges.rows(), Bitmap.Config.ARGB_8888);
