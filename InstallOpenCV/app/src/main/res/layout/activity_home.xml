@@ -11,12 +11,17 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         android:orientation="vertical">
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:src="@drawable/logo"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_marginTop="82dp"
+            android:layout_height="200dp"
+            android:src="@drawable/logo"
+            android:id="@+id/hasil"/>
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -29,5 +34,17 @@
             app:elevation="6dp"
             android:background="@color/colorAccent"
             android:id="@+id/tambah"/>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|bottom"
+            android:src="@drawable/ic_baseline_camera_alt_24"
+            android:layout_margin="15dp"
+            app:fabSize="normal"
+            app:borderWidth="0dp"
+            android:padding="16dp"
+            app:elevation="6dp"
+            android:background="@color/colorAccent"
+            android:id="@+id/camera"/>
     </FrameLayout>
 </LinearLayout>
