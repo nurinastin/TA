@@ -67,8 +67,7 @@ public class Home extends AppCompatActivity {
                 Intent intent = new Intent(getBaseContext(), CustomPreview.class);
                 intent.putExtra("file", name);
                 startActivity(intent);
-
-                startActivity(new Intent(getBaseContext(), CustomPreview.class));
+//                startActivity(new Intent(getBaseContext(), CustomPreview.class));
 
             }
         });

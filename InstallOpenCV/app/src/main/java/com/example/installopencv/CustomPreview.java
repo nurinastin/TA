@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PixelFormat;
+import android.hardware.Camera;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraDevice;
@@ -62,7 +63,7 @@ public class CustomPreview extends AppCompatActivity implements SurfaceHolder.Ca
     int SELECT_IMAGE = 1;
     private Uri contentURI;
     Bitmap bitmap;
-
+    int flipn = 0;
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +79,19 @@ public class CustomPreview extends AppCompatActivity implements SurfaceHolder.Ca
         flip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cover.setScaleX(-1);
+                if(flipn == 0){
+                    flipn = 1;
+                    cover.setScaleX(-1);
+                }else if(flipn == 1){
+                    flipn = 2;
+                    cover.setScaleX(1);
+                }else if(flipn == 2){
+                    flipn = 3;
+                    cover.setScaleY(1);
+                }else{
+                    flipn = 0;
+                    cover.setScaleY(-1);
+                }
             }
         });
         open.setOnClickListener(new View.OnClickListener() {
@@ -87,14 +100,20 @@ public class CustomPreview extends AppCompatActivity implements SurfaceHolder.Ca
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 Uri uri = Uri.parse(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getPath()
                         + "/"+getApplicationInfo().loadLabel(getPackageManager()).toString());
-                intent.setDataAndType(uri, "file/*");
-                startActivity(Intent.createChooser(intent, "Open folder"));
-//                startActivityForResult(Intent.createChooser(intent, "Select Picture"),SELECT_IMAGE);
+                intent.setDataAndType(uri, "image/*");
+                startActivityForResult(Intent.createChooser(intent, "Open folder"), SELECT_IMAGE);
             }
         });
         try {
-            loadfile();
+//            if(contentURI==null){
+            Intent data = getIntent();
+//            Log.d("file", data.getStringExtra("file"));
+            if(!data.getStringExtra("file").equals("")){
+                loadfile();
+            }
+//            }
         } catch (IOException e) {
+            Log.d("pesanE", e.getMessage());
             e.printStackTrace();
         }
         this.mCameraManager = (CameraManager) this.getSystemService(Context.CAMERA_SERVICE);
@@ -128,9 +147,20 @@ public class CustomPreview extends AppCompatActivity implements SurfaceHolder.Ca
         };
     }
     @Override
+    public void onBackPressed()
+    {
+        // code here to show dialog
+        super.onBackPressed();  // optional depending on your needs
+        Intent intent = new Intent(CustomPreview.this, Home.class);
+        startActivity(intent);
+        finish();
+    }
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.d("pesan", "activityresult");
         if (resultCode == this.RESULT_CANCELED) {
+
             return;
         }
         if (requestCode == SELECT_IMAGE) {
@@ -138,8 +168,9 @@ public class CustomPreview extends AppCompatActivity implements SurfaceHolder.Ca
                 contentURI = data.getData();
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-//                    Log.d("lokasi", contentURI.toString());
+                    Log.d("lokasi", contentURI.toString());
                     cover.setImageBitmap(bitmap);
+                    cover.setAlpha(127);
 //                    detectEdges(bitmap, contentURI);
                 } catch (Exception e) {
                     e.printStackTrace();
