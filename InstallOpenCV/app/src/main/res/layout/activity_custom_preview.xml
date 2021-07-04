@@ -5,11 +5,11 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
     <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="fill_parent">
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
         <SurfaceView
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="500dp"
             android:id="@+id/view"
             />
         <ImageView

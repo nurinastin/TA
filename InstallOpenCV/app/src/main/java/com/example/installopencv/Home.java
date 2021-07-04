@@ -40,6 +40,7 @@ import org.opencv.imgproc.Imgproc;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -151,12 +152,13 @@ public class Home extends AppCompatActivity {
         Imgproc.cvtColor(rgba, edges, Imgproc.COLOR_RGB2GRAY, 100);
         Imgproc.Canny(edges, edges, 80, 120);
 //        Imgproc.adaptiveThreshold(edges, edges, 255, Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY_INV, 15, 4);
-
-//        Core.inRange(rgba, low, high, edges);
         Core.bitwise_not(edges, edges);
 //        Imgproc.GaussianBlur( edges, edges, new Size(3, 3), 0, 0, Core.BORDER_DEFAULT );/
 //        Imgproc.drawContours(rgba, contours, maxI, new Scalar(0, 255, 0), 5);
 //        Imgproc.Canny(edges, edges, 2, 500, 7, true);
+
+
+
         // Don't do that at home or work it's for visualization purpose.
         Bitmap resultBitmap = Bitmap.createBitmap(edges.cols(), edges.rows(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(edges, resultBitmap);
