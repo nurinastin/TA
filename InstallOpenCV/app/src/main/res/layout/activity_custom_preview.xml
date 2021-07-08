@@ -9,7 +9,7 @@
         android:layout_height="wrap_content">
         <SurfaceView
             android:layout_width="fill_parent"
-            android:layout_height="500dp"
+            android:layout_height="350dp"
             android:id="@+id/view"
             />
         <ImageView
