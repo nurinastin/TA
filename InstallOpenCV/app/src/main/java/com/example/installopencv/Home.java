@@ -16,6 +16,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.webkit.PermissionRequest;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -45,9 +46,10 @@ import java.util.List;
 import java.util.Random;
 
 public class Home extends AppCompatActivity {
-    FloatingActionButton tambah, camera;
+    FloatingActionButton tambah;
     int SELECT_IMAGE = 1;
     private Uri contentURI;
+    Button camera;
     Bitmap bitmap;
     boolean startCanny = false;
     BaseLoaderCallback baseLoaderCallback;
