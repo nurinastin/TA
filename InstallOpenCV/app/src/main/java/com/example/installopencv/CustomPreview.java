@@ -132,7 +132,6 @@ public class CustomPreview extends AppCompatActivity  {
                     Log.d("lokasi", contentURI.toString());
                     cover.setImageBitmap(bitmap);
                     cover.setAlpha(127);
-//                    detectEdges(bitmap, contentURI);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
