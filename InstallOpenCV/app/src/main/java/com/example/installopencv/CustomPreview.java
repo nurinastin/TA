@@ -27,13 +27,17 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,15 +50,19 @@ import java.util.List;
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class CustomPreview extends AppCompatActivity  {
     static final int MY_PERMISSIONS_REQUEST_CAMERA = 1242;
-    TextView open, flip;
+    TextView open, flip, scale;
     ImageView cover;
     int SELECT_IMAGE = 1;
     private Uri contentURI;
     Bitmap bitmap;
-    int flipn = 0;
+    int flipn = 0, scaleValue = 0;
     Camera camera;
     FrameLayout view;
     ShowCamera show;
+    LinearLayout scale_object;
+    int height = 600, width = 600;
+    EditText input_height, input_width;
+    Button simpan;
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +72,63 @@ public class CustomPreview extends AppCompatActivity  {
         cover = findViewById(R.id.cover);
         open = findViewById(R.id.open);
         flip = findViewById(R.id.flip);
+        scale = findViewById(R.id.scale);
+        simpan = findViewById(R.id.simpan);
+        input_height = findViewById(R.id.input_height);
+        input_width = findViewById(R.id.input_width);
+        scale_object = findViewById(R.id.scale_object);
+        input_height.setText(String.valueOf(height));
+        input_width.setText(String.valueOf(width));
+        simpan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                height = Integer.parseInt(input_height.getText().toString());
+//                width = Integer.parseInt(input_width.getText().toString());
+                Log.d("klik", "simpan");
+                changeSize(Integer.parseInt(input_height.getText().toString()), Integer.parseInt(input_width.getText().toString()));
+            }
+        });
+        scale.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("height", String.valueOf(cover.getLayoutParams().height));
+                check();
+            }
+        });
+        check();
+        changeSize(height, width);
+        scale_object = findViewById(R.id.scale_object);
+        cover.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                cover.setScaleX(600);
+                cover.setScaleY(600);
+            }
+        });
+        cover.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                float xDown = 0, yDown = 0;
+                switch(event.getActionMasked()){
+                    case MotionEvent.ACTION_DOWN:
+                        xDown = event.getX();
+                        yDown = event.getY();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        float movedX, movedY;
+                        movedX = event.getX();
+                        movedY = event.getY();
+                        float distanceX = movedX - xDown - (cover.getLayoutParams().height - 200);
+                        float distanceY = movedY - yDown - (cover.getLayoutParams().width - 200);
+                        cover.setX(cover.getX() + distanceX);
+                        cover.setY(cover.getY() + distanceY);
+                        break;
+                }
+                return true;
+
+            }
+        });
         flip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,6 +171,19 @@ public class CustomPreview extends AppCompatActivity  {
         show = new ShowCamera(this, camera);
         view.addView(show);
 
+    }
+    void changeSize(int vheight, int vwidth){
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(vwidth, vheight);
+        cover.setLayoutParams(layoutParams);
+    }
+    void check(){
+        if(scaleValue == 1){
+            scaleValue = 0;
+            scale_object.setVisibility(View.VISIBLE);
+        }else{
+            scaleValue = 1;
+            scale_object.setVisibility(View.GONE);
+        }
     }
     @Override
     public void onBackPressed()
