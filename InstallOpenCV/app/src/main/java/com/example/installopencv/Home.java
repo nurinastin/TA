@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -18,8 +19,12 @@ import android.view.View;
 import android.webkit.PermissionRequest;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetSequence;
+import com.getkeepsafe.taptargetview.TapTargetView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -49,19 +54,32 @@ public class Home extends AppCompatActivity {
     FloatingActionButton tambah;
     int SELECT_IMAGE = 1;
     private Uri contentURI;
-    Button camera;
+    Button camera,cancel;
     Bitmap bitmap;
     boolean startCanny = false;
     BaseLoaderCallback baseLoaderCallback;
     ImageView hasil;
     String name = "";
+    LinearLayout home, preview;
     Scalar low, high;
+    Boolean next = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         tambah = findViewById(R.id.tambah);
         camera = findViewById(R.id.camera);
+        home = findViewById(R.id.home);
+        preview = findViewById(R.id.preview);
+        cancel = findViewById(R.id.cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                home.setVisibility(View.VISIBLE);
+                preview.setVisibility(View.GONE);
+                hasil.setVisibility(View.GONE);
+            }
+        });
         OpenCVLoader.initDebug();
 //        Log.d("appname", getApplicationInfo().loadLabel(getPackageManager()).toString());
         camera.setOnClickListener(new View.OnClickListener() {
@@ -70,7 +88,6 @@ public class Home extends AppCompatActivity {
                 Intent intent = new Intent(getBaseContext(), CustomPreview.class);
                 intent.putExtra("file", name);
                 startActivity(intent);
-//                startActivity(new Intent(getBaseContext(), CustomPreview.class));
 
             }
         });
@@ -87,6 +104,69 @@ public class Home extends AppCompatActivity {
         low = new Scalar(45,20,10);
         high = new Scalar(75,255,255);
         requestMultiplePermissions();
+        showcase();
+    }
+    public void showcase(){
+        if(next){
+            TapTargetView.showFor(this,
+                    TapTarget.forView(camera,"Kamera","klik start untuk menampilkan gambar di kamera")
+                            .outerCircleColor(R.color.colorWhite)
+                            .outerCircleAlpha(0.96f)
+                            .targetCircleColor(R.color.colorPrimary)
+                            .titleTextSize(20)
+                            .titleTextColor(R.color.colorBlack)
+                            .descriptionTextSize(10)
+                            .descriptionTextColor(R.color.colorBlack)
+                            .textColor(R.color.colorBlack)
+                            .textTypeface(Typeface.SANS_SERIF)
+                            .dimColor(R.color.colorBlack)
+                            .drawShadow(true)
+                            .cancelable(false)
+                            .tintTarget(true)
+                            .transparentTarget(true)
+                            .targetRadius(60),
+                    new TapTargetView.Listener(){
+
+                        @Override
+                        public void onTargetClick(TapTargetView view) {
+                            super.onTargetClick(view);
+                            Intent intent = new Intent(getBaseContext(), CustomPreview.class);
+                            intent.putExtra("file", name);
+                            startActivity(intent);
+                        }
+                    }
+            );
+        }else{
+            TapTargetView.showFor(this,
+                TapTarget.forView(tambah,"Button tambah","klik button untuk menambah gambar dari gallery anda")
+                        .outerCircleColor(R.color.colorWhite)
+                        .outerCircleAlpha(0.96f)
+                        .targetCircleColor(R.color.colorPrimary)
+                        .titleTextSize(20)
+                        .titleTextColor(R.color.colorBlack)
+                        .descriptionTextSize(10)
+                        .descriptionTextColor(R.color.colorBlack)
+                        .textColor(R.color.colorBlack)
+                        .textTypeface(Typeface.SANS_SERIF)
+                        .dimColor(R.color.colorBlack)
+                        .drawShadow(true)
+                        .cancelable(false)
+                        .tintTarget(true)
+                        .transparentTarget(true)
+                        .targetRadius(60),
+                new TapTargetView.Listener(){
+
+                    @Override
+                    public void onTargetClick(TapTargetView view) {
+                        super.onTargetClick(view);
+                        Intent intent = new Intent();
+                        intent.setType("image/*");
+                        intent.setAction(Intent.ACTION_GET_CONTENT);
+                        startActivityForResult(Intent.createChooser(intent, "Select Picture"),SELECT_IMAGE);
+                    }
+                });
+        }
+
     }
     public void Canny(View Button){
 //        ketika klik button canny dengan nilai default startcanny == false maka akan menggantikan nilai startcanny ke true untuk menghidupkan deteksi tepi pada aplikasi
@@ -165,10 +245,13 @@ public class Home extends AppCompatActivity {
         Bitmap resultBitmap = Bitmap.createBitmap(edges.cols(), edges.rows(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(edges, resultBitmap);
 
-
-//        Core.convertScaleAbs( laplace, laplace );
+        preview.setVisibility(View.VISIBLE);
+        hasil.setVisibility(View.VISIBLE);
+        home.setVisibility(View.GONE);
+        next = true;
         BitmapHelper.showBitmap(this, resultBitmap, hasil);
         SaveImage(resultBitmap);
+        showcase();
     }
     private void requestMultiplePermissions(){
 

@@ -5,46 +5,97 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_gravity="center"
-    android:padding="16dp"
     android:background="@color/colorBlack"
     android:layout_height="match_parent">
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <ImageView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:src="@drawable/logo"/>
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_marginTop="100dp"
-            android:layout_height="200dp"
-            android:src="@drawable/empty"
-            android:id="@+id/hasil"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_marginTop="100dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="16dp"
             android:layout_gravity="center"
-            android:layout_height="wrap_content"
-            android:background="@color/colorGray"
-            android:textColor="@color/colorBlack"
-            android:id="@+id/camera"
-            android:padding="16dp"
-            android:text="Mulai Menggambar"/>
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|bottom"
-            android:src="@drawable/ic_add_box_black_24dp"
-            android:layout_margin="15dp"
-            app:fabSize="normal"
-            app:borderWidth="0dp"
-            android:tint="@color/colorGray"
-            android:padding="16dp"
-            app:elevation="6dp"
-            app:rippleColor="@color/colorGray"
-            android:background="@color/colorGray"
-            android:id="@+id/tambah"/>
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/empty"
+                android:visibility="gone"
+                android:id="@+id/hasil"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/home"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:src="@drawable/logo"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="SKETCH"
+                    android:textAlignment="center"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorWhite"
+                    android:gravity="center_horizontal" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Make your sketch more perfect"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:padding="8dp"
+                    android:textColor="@color/colorWhite"
+                    android:gravity="center_horizontal" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|bottom"
+                    android:src="@drawable/ic_add_box_black_24dp"
+                    android:layout_margin="15dp"
+                    app:fabSize="normal"
+                    app:borderWidth="0dp"
+                    android:tint="@color/colorGray"
+                    android:padding="16dp"
+                    app:elevation="6dp"
+                    app:rippleColor="@color/colorGray"
+                    android:background="@color/colorGray"
+                    android:id="@+id/tambah"/>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:gravity="bottom"
+            android:id="@+id/preview"
+            android:visibility="gone"
+            android:layout_gravity="bottom"
+            android:orientation="horizontal">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:textColor="@color/colorWhite"
+                android:id="@+id/cancel"
+                android:padding="16dp"
+                android:text="Cancel"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:textColor="@color/colorWhite"
+                android:id="@+id/camera"
+                android:padding="16dp"
+                android:text="Start"/>
+        </LinearLayout>
     </FrameLayout>
 </LinearLayout>

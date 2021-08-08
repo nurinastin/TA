@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PixelFormat;
+import android.graphics.Typeface;
 import android.hardware.Camera;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
@@ -40,6 +41,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetSequence;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -82,8 +86,6 @@ public class CustomPreview extends AppCompatActivity  {
         simpan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                height = Integer.parseInt(input_height.getText().toString());
-//                width = Integer.parseInt(input_width.getText().toString());
                 Log.d("klik", "simpan");
                 changeSize(Integer.parseInt(input_height.getText().toString()), Integer.parseInt(input_width.getText().toString()));
             }
@@ -170,12 +172,66 @@ public class CustomPreview extends AppCompatActivity  {
         view = findViewById(R.id.view);
         show = new ShowCamera(this, camera);
         view.addView(show);
-
+        showcase();
     }
+    public void showcase(){
+        new TapTargetSequence(this)
+                .targets(
+                        TapTarget.forView(flip,"Flip","Berfungsi untuk memutar gambar")
+                                .outerCircleColor(R.color.colorWhite)
+                                .outerCircleAlpha(0.96f)
+                                .targetCircleColor(R.color.colorPrimary)
+                                .titleTextSize(20)
+                                .titleTextColor(R.color.colorBlack)
+                                .descriptionTextSize(10)
+                                .descriptionTextColor(R.color.colorBlack)
+                                .textColor(R.color.colorBlack)
+                                .textTypeface(Typeface.SANS_SERIF)
+                                .dimColor(R.color.colorBlack)
+                                .drawShadow(true)
+                                .cancelable(false)
+                                .tintTarget(true)
+                                .transparentTarget(true)
+                                .targetRadius(60),
+                        TapTarget.forView(open,"Open","Berfungsi untuk membuka gambar dari gallery")
+                                .outerCircleColor(R.color.colorWhite)
+                                .outerCircleAlpha(0.96f)
+                                .targetCircleColor(R.color.colorPrimary)
+                                .titleTextSize(20)
+                                .titleTextColor(R.color.colorBlack)
+                                .descriptionTextSize(10)
+                                .descriptionTextColor(R.color.colorBlack)
+                                .textColor(R.color.colorBlack)
+                                .textTypeface(Typeface.SANS_SERIF)
+                                .dimColor(R.color.colorBlack)
+                                .drawShadow(true)
+                                .cancelable(false)
+                                .tintTarget(true)
+                                .transparentTarget(true)
+                                .targetRadius(60),
+                        TapTarget.forView(scale,"Scale","Berfungsi untuk mengubah ukuran gambar")
+                                .outerCircleColor(R.color.colorWhite)
+                                .outerCircleAlpha(0.96f)
+                                .targetCircleColor(R.color.colorPrimary)
+                                .titleTextSize(20)
+                                .titleTextColor(R.color.colorBlack)
+                                .descriptionTextSize(10)
+                                .descriptionTextColor(R.color.colorBlack)
+                                .textColor(R.color.colorBlack)
+                                .textTypeface(Typeface.SANS_SERIF)
+                                .dimColor(R.color.colorBlack)
+                                .drawShadow(true)
+                                .cancelable(false)
+                                .tintTarget(true)
+                                .transparentTarget(true)
+                                .targetRadius(60)).start();
+    }
+//    fungsi untuk mengubah ukuran gambar
     void changeSize(int vheight, int vwidth){
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(vwidth, vheight);
         cover.setLayoutParams(layoutParams);
     }
+
     void check(){
         if(scaleValue == 1){
             scaleValue = 0;
