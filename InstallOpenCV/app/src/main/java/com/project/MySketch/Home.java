@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Home extends AppCompatActivity {
-    FloatingActionButton tambah;
+    Button tambah;
     int SELECT_IMAGE = 1;
     private Uri contentURI;
     Button camera,cancel;
@@ -95,7 +95,9 @@ public class Home extends AppCompatActivity {
         low = new Scalar(45,20,10);
         high = new Scalar(75,255,255);
         requestMultiplePermissions();
-        showcase();
+        if(First.getInstance(getBaseContext()).isFirst()){
+            showcase();
+        }
     }
     public void showcase(){
         if(next){
@@ -216,6 +218,13 @@ public class Home extends AppCompatActivity {
             Log.d("eror", e.getMessage());
             e.printStackTrace();
         }
+    }
+    @Override
+    public void onBackPressed()
+    {
+        BottomSheetAlert bottomSheet = new BottomSheetAlert();
+        bottomSheet.show(getSupportFragmentManager(),
+                "ModalBottomSheet");
     }
     private void detectEdges(Bitmap bmp, Uri contentURI) {
         Mat rgba = new Mat();

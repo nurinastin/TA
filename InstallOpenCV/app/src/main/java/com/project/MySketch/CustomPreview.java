@@ -30,6 +30,7 @@ import android.widget.TextView;
 
 import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
+import com.getkeepsafe.taptargetview.TapTargetView;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -156,7 +157,9 @@ public class CustomPreview extends AppCompatActivity  {
         view = findViewById(R.id.view);
         show = new ShowCamera(this, camera);
         view.addView(show);
-        showcase();
+        if(First.getInstance(getBaseContext()).isFirst()) {
+            showcase();
+        }
     }
     public void showcase(){
         new TapTargetSequence(this)
@@ -208,7 +211,29 @@ public class CustomPreview extends AppCompatActivity  {
                                 .cancelable(false)
                                 .tintTarget(true)
                                 .transparentTarget(true)
-                                .targetRadius(60)).start();
+                                .targetRadius(60)).listener(new TapTargetSequence.Listener() {
+            // This listener will tell us when interesting(tm) events happen in regards
+            // to the sequence
+            @Override
+            public void onSequenceFinish() {
+                // Yay
+                Log.d("pesan", "finish");
+                First.getInstance(getBaseContext()).setKode("true");
+            }
+
+            @Override
+            public void onSequenceStep(TapTarget lastTarget, boolean targetClicked) {
+                // Perform action for the current target
+                Log.d("pesan", "stop");
+            }
+
+            @Override
+            public void onSequenceCanceled(TapTarget lastTarget) {
+                // Boo
+                Log.d("pesan", "cancel");
+            }
+        }).start();
+//                ).start();
     }
 //    fungsi untuk mengubah ukuran gambar
     void changeSize(int vheight, int vwidth){

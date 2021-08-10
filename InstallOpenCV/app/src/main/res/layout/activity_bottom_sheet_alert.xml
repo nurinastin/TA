@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:background="@color/colorBlack"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:textColor="@color/colorWhite"
+        android:layout_height="wrap_content"
+        android:text="Apakah anda ingin keluar aplikasi?"
+        android:textSize="20sp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_margin="10dp"
+            android:id="@+id/cancel"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/cancel" />
+
+        <Button
+            android:layout_margin="10dp"
+            android:id="@+id/out"
+            android:layout_width="50dp"
+            android:background="@drawable/check"
+            android:layout_height="50dp" />
+
+    </LinearLayout>
+</LinearLayout>
